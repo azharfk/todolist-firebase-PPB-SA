@@ -1,0 +1,22 @@
+// file: android/build.gradle (root-level build.gradle file)
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.google.gms:google-services:4.3.13'  // Google Services plugin
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
