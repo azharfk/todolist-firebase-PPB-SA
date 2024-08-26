@@ -5,19 +5,20 @@ import 'todo.dart';
 class ItemList extends StatelessWidget {
   final Todo todo;
   final String transaksiDocId;
+  final VoidCallback
+      onTap; // Menambahkan parameter onTap untuk menerima callback
 
   const ItemList({
     super.key,
     required this.todo,
     required this.transaksiDocId,
+    required this.onTap, // Menambahkan parameter onTap
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Tambahkan logika jika perlu
-      },
+      onTap: onTap, // Menggunakan onTap saat item ditekan
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
         height: 100,

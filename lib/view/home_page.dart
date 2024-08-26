@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_todolist/model/item_list.dart';
 import 'package:firebase_todolist/model/todo.dart';
 import 'login_page.dart';
+import 'detail_page.dart';
+import 'plan_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -51,7 +53,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // getTodo bisa diimplementasikan jika diperlukan
   }
 
   Future<void> addTodo() {
@@ -131,6 +132,17 @@ class _HomePageState extends State<HomePage> {
                     return ItemList(
                       todo: listTodo[index],
                       transaksiDocId: snapshot.data!.docs[index].id,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailPage(
+                              todo: listTodo[index],
+                              docId: snapshot.data!.docs[index].id,
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
                 );
@@ -139,47 +151,65 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Tambah Todo'),
-              content: SizedBox(
-                width: 200,
-                height: 100,
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _titleController,
-                      decoration: const InputDecoration(hintText: 'Judul todo'),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: 'add_todo',
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Tambah Todo'),
+                  content: SizedBox(
+                    width: 200,
+                    height: 100,
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: _titleController,
+                          decoration:
+                              const InputDecoration(hintText: 'Judul todo'),
+                        ),
+                        TextField(
+                          controller: _descriptionController,
+                          decoration:
+                              const InputDecoration(hintText: 'Deskripsi todo'),
+                        ),
+                      ],
                     ),
-                    TextField(
-                      controller: _descriptionController,
-                      decoration:
-                          const InputDecoration(hintText: 'Deskripsi todo'),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: const Text('Batalkan'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    TextButton(
+                      child: const Text('Tambah'),
+                      onPressed: () {
+                        addTodo();
+                        clearText();
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),
-              ),
-              actions: [
-                TextButton(
-                  child: const Text('Batalkan'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                TextButton(
-                  child: const Text('Tambah'),
-                  onPressed: () {
-                    addTodo();
-                    clearText();
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
+              );
+            },
+            child: const Icon(Icons.add),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: 'plan_page',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PlanPage()),
+              );
+            },
+            child: const Icon(Icons.calendar_today),
+          ),
+        ],
       ),
     );
   }

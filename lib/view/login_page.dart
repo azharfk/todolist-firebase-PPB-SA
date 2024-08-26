@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'package:firebase_todolist/view/home_page.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         navigator.pushReplacement(MaterialPageRoute(builder: (context) {
-          return const HomePage();
+          return const HomePage(); // Menghapus dataList karena tidak diperlukan
         }));
       }
     } catch (e) {
